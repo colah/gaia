@@ -77,7 +77,7 @@ class Tile{
 
 	
 	public:
-int id;
+char id;
 	/*General Things */
 
 	Planet *planet; ///<The Planet that this is a Tile of.

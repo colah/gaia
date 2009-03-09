@@ -115,8 +115,7 @@ class Planet{
 	}
 
 	void commit(double lat, double lon){
-		Tile *test = this->getAtLL(lat,lon);
-		test->crust.base_height += 5/test->crust.area;
+		this->getAtLL(lat,lon)->crust.base_height += 5;
 	}
 
 
