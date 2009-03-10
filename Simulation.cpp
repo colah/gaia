@@ -98,23 +98,23 @@ void Simulation::comet(double lat, double lon)
 }
 
 void erode(){
-	//It would be cool to use pointer arithmetic to do an iterator style loop. More efficient to.
+	//It would be cool to use pointer arithmetic to do an iterator style loop.
+	//More efficient too.
 	///@todo fix elevation only leans north. Consider our API, I think the OO encapsulation has been taken a little to far.
-	double Delta;
 	for (int x = -maxX; x <= maxX; ++x) {
 		for (int y = -maxY; y <= maxY; ++y) {
-			Delta = tiles[x][y].north().crust().elevation() - tiles[x][y].crust().elevation();
-			if (Delta > 0) {
-				tiles[x][y].crust().setElevation(
-					  tiles[x][y].crust().elevation() 
-					+ Delta
-					    *tiles[x][y].crust().roughness()
-					    /tiles[x][y].crust().elevation().firmness());
-				tiles[x][y].crust().setElevation(
-					  tiles[x][y].north().crust().elevation() 
-					+ Delta
-					    *tiles[x][y].north().crust().roughness()
-					    /tiles[x][y].north().crust().elevation().firmness());
+			Crust c = tiles[x][y].crust();
+			Crust adjC = tiles[x][y].north().crust();
+			//The difference in elevation
+			double d = adjC.elevation() - c.elevation();
+			if (d > 0) {
+				double change;
+				
+				change = d*c.roughness()/c.firmness();
+				c.setElevation( c.elevation() + change );
+				
+				change = d*adjC.roughness()/adjC.firmness();
+				adjC.setElevation( adjC.elevation() +change );
 			}
 		}
 	}
