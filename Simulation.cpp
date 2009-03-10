@@ -34,11 +34,12 @@ Simulation::Simulation( int precision, Planet planet )
 	/*Make the array of arrays, and phase shift it. */
 	m_tiles  =  new Tile*[m_precision*2 + 1];
 	m_tiles += m_precision;
-	for (int x = -m_precision*2; x <= m_precision*2; ++x) {
-	}
+	maxX = m_precision*2;
+	maxY = m_precision;
+	//for (int x = -maxX; x <= maxX; ++x) {}
 	
-	for (int x = -m_precision*2; x <= m_precision*2; ++x) {
-		for (int y = -m_precision; y <= m_precision; ++y) {
+	for (int x = -maxX; x <= maxX; ++x) {
+		for (int y = -maxY; y <= maxY; ++y) {
 			/* We want to have longitude and latitude measured in radians,*
 			 * not our array indices.                                     */
 			double lon = x*PtoR;
@@ -84,7 +85,7 @@ Simulation::Simulation( int precision, Planet planet )
 				m_tiles[x][y].setWest( &(m_tiles[x][--y]));
 			}
 			//FIXME: give actual values
-			m_tiles[x][y].crust() = Crust( 0, 0, 0 );
+			m_tiles[x][y].crust() = Crust( 1, 1, 0 );
 		}
 	}
 }
@@ -96,3 +97,26 @@ void Simulation::comet(double lat, double lon)
 	c.setElevation( (5.0/ test->area()) + c.elevation() );
 }
 
+void erode(){
+	//It would be cool to use pointer arithmetic to do an iterator style loop. More efficient to.
+	///@todo fix elevation only leans north. Consider our API, I think the OO encapsulation has been taken a little to far.
+	double Delta;
+	for (int x = -maxX; x <= maxX; ++x) {
+		for (int y = -maxY; y <= maxY; ++y) {
+			Delta = tiles[x][y].north().crust().elevation() - tiles[x][y].crust().elevation();
+			if (Delta > 0) {
+				tiles[x][y].crust().setElevation(
+					  tiles[x][y].crust().elevation() 
+					+ Delta
+					    *tiles[x][y].crust().roughness()
+					    /tiles[x][y].crust().elevation().firmness());
+				tiles[x][y].crust().setElevation(
+					  tiles[x][y].north().crust().elevation() 
+					+ Delta
+					    *tiles[x][y].north().crust().roughness()
+					    /tiles[x][y].north().crust().elevation().firmness());
+			}
+		}
+	}
+
+}

@@ -40,7 +40,13 @@ public:
 	  * @param lon longitude in Radians */
 	Tile * getAtLL(double lon, double lat);
 
+	/**Smite the planet with a comet!
+	  *@param lon longitude
+	  *@param lat latitude*/
 	void comet(double lon, double lat);
+
+	/**causes erosion*/
+	void erode();
 
 private:
 	/**  m_tiles is a 2d array of Tiles.*/
@@ -48,6 +54,7 @@ private:
 	/** describes the precision of the simulation and by extension
 	the dimensions of m_tiles. */
 	int  m_precision;
+	int maxX,maxY;
 	 /*
 	 * Diagram
 	 * How Tiles are organized into m_tiles, relative to the variable
