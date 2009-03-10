@@ -1,4 +1,7 @@
 
+#ifndef GAIAGLOBALS_H
+#define GAIAGLOBALS_H
+
 namespace Gaia {
 
 
@@ -66,5 +69,5 @@ enum BiomeType {
 
 } //ns Gaia
 
-
+#endif
 
