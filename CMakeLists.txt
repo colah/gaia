@@ -14,5 +14,5 @@ SET( Gaia_SRCS Crust.cpp OuterCore.cpp Thermosphere.cpp TileLayer.cpp
                main.cpp )
 ADD_EXECUTABLE( gaia ${Gaia_SRCS} )
 
-target_link_libraries(  gaia marblewidget ${QT_LIBRARIES} )
+target_link_libraries(  gaia ${MARBLE_LIBRARIES} ${QT_LIBRARIES} )
 
