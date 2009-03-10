@@ -27,6 +27,12 @@ public:
 	*/
 	double baseHeight() const;
 
+	/** The surface area of the planet at the Crust
+	  * @return the area in m^2
+	  * @see setArea()
+	*/
+	double area() const;
+
 	/** Sets the firmness.
 	@param firmness the new firmness
 	@see firmness()
@@ -45,8 +51,14 @@ public:
 	*/
 	void setBaseHeight( double baseHeight );
 
+	/** Sets the surface area of the planet at the Crust
+	  * @param area the area in m^2
+	  * @see area()
+	*/
+	void setArea(double area);
+
 private:
-	double m_firmness, m_roughness, m_baseHeight;
+	double m_firmness, m_roughness, m_baseHeight, m_area;
 };
 
 #endif
