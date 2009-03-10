@@ -1,3 +1,15 @@
+#ifndef TILE_H
+#define TILE_H
+
+
+#include "InnerCore.h"
+#include "OuterCore.h"
+#include "Mantle.h"
+#include "Crust.h"
+#include "Troposphere.h"
+#include "Thermosphere.h"
+#include "Simulation.h"
+
 
 /**
  * An object of Tile represents a certain amount of space on the gloce. This space
@@ -31,7 +43,7 @@ public:
 	/** The ID of the tile
 	@return the unique tile identifier
 	*/
-	uint id() const;
+	unsigned int id() const;
 
 	/*General Things */
 
@@ -59,6 +71,18 @@ public:
 	@return a pointer to the tile to the west of this one
 	*/
 	Tile* west() const;
+
+	/** Set the tile to the north of this one */
+	void north(Tile *newNorth) const;
+
+	/** Set the tile to the south of this one */
+	void south(Tile *newSouth) const;
+
+	/** Set the tile to the east of this one */
+	void east(Tile *newEast) const;
+
+	/** Set the tile to the west of this one */
+	void west(Tile *newWest) const;
 
 	/** The longitude of this tile.
 	@note In formulas, longitude is \f$ \lambda \f$
@@ -105,7 +129,7 @@ public:
 	InnerCore& innerCore() const;
 
 private:
-	uint m_id;
+	unsigned int m_id;
 	Simulation *m_simulation;
 	Tile* m_north, m_south, m_east, m_west;
 	double m_lon, m_lat;
@@ -119,5 +143,6 @@ private:
 	InnerCore m_innerCore;
 };
 
+#endif
 
 

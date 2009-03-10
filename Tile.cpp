@@ -1,3 +1,4 @@
+#include "Tile.h"
 
 Tile::Tile( double lon, double lat, double area, Simulation *parent )
 {
@@ -30,6 +31,26 @@ Tile* Tile::east() const
 Tile* Tile::west() const
 {
 	return m_west;
+}
+
+void north(Tile *newNorth) const
+{
+	m_north = newNorth;
+}
+
+void south(Tile *newSouth) const
+{
+	m_south = newSouth;
+}
+
+void east(Tile *newEast) const
+{
+	m_east = newEast;
+}
+
+void west(Tile *newWest) const
+{
+	m_west = newWest;
 }
 
 double Tile::lon() const
