@@ -1,15 +1,17 @@
 cmake_minimum_required( VERSION 2.6 )
 
 project( Gaia )
+FIND_PACKAGE(Qt4 REQUIRED)
+INCLUDE(${QT_USE_FILE})
 
-FIND_LIBRARY( Marble REQUIRED )
-include_directories( ${MARBLE_INCLUDE_DIR} )
+FIND_PACKAGE( Marble REQUIRED )
+INCLUDE_DIRECTORIES( ${MARBLE_INCLUDE_DIR} )
 
 
-set( Gaia_SRCS Crust.cpp OuterCore.cpp Thermosphere.cpp TileLayer.cpp
+SET( Gaia_SRCS Crust.cpp OuterCore.cpp Thermosphere.cpp TileLayer.cpp
                InnerCore.cpp Mantle.cpp Simulation.cpp Tile.cpp Troposphere.cpp
                main.cpp )
-add_executable( gaia ${Gaia_SRCS} )
+ADD_EXECUTABLE( gaia ${Gaia_SRCS} )
 
-target_link_libraries(  gaia marblewidget )
+target_link_libraries(  gaia marblewidget ${QT_LIBRARIES} )
 
