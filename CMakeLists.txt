@@ -16,3 +16,5 @@ ADD_EXECUTABLE( gaia ${Gaia_SRCS} )
 
 target_link_libraries(  gaia ${MARBLE_LIBRARIES} ${QT_LIBRARIES} )
 
+
+

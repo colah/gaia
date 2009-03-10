@@ -96,3 +96,5 @@ void Simulation::comet(double lat, double lon)
 	c.setBaseHeight( (5.0/ test->area()) + c.baseHeight() );
 }
 
+
+
