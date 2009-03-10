@@ -1,3 +1,4 @@
+#include "Tile.h"
 
 Tile::Tile( double lon, double lat, double area, Simulation *parent )
 {

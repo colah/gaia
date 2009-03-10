@@ -1,6 +1,8 @@
 #ifndef CRUST_H
 #define CRUST_H
 
+#include "TileLayer.h"
+
 /**The Crust is the outermost solid layer of a planet.*/
 class Crust : public TileLayer
 {

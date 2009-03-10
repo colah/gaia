@@ -24,15 +24,15 @@ double Crust::baseHeight() const
 
 void Crust::setFirmness( double firmness )
 {
-	return m_firmness;
+	m_firmness = firmness;
 }
 
 void Crust::setRoughness( double roughness )
 {
-	return m_roughness;
+	m_roughness = roughness;
 }
 
 void Crust::setBaseHeight( double baseHeight )
 {
-	return m_baseHeight;
+	m_baseHeight = baseHeight;
 }
