@@ -1,10 +1,10 @@
 #include "Crust.h"
 
-Crust::Crust( double firmness, double roughness, double baseHeight )
+Crust::Crust( double firmness, double roughness, double elevation )
 {
 	m_firmness = firmness;
 	m_roughness = roughness;
-	m_baseHeight = baseHeight;
+	m_elevation = elevation;
 }
 
 Crust::Crust()
@@ -21,9 +21,9 @@ double Crust::roughness() const
 	return m_roughness;
 }
 
-double Crust::baseHeight() const
+double Crust::elevation() const
 {
-	return m_baseHeight;
+	return m_elevation;
 }
 
 double Crust::area() const
@@ -41,9 +41,9 @@ void Crust::setRoughness( double roughness )
 	m_roughness = roughness;
 }
 
-void Crust::setBaseHeight( double baseHeight )
+void Crust::setElevation( double elevation )
 {
-	m_baseHeight = baseHeight;
+	m_elevation = elevation;
 }
 
 void Crust::setArea(double area)

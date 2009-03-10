@@ -93,6 +93,6 @@ void Simulation::comet(double lat, double lon)
 {
 	Tile *test = getAtLL(lat,lon);
 	Crust c = test->crust();
-	c.setBaseHeight( (5.0/ test->area()) + c.baseHeight() );
+	c.setElevation( (5.0/ test->area()) + c.elevation() );
 }
 
