@@ -1,6 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <QtGlobal>
 
 #include "InnerCore.h"
 #include "OuterCore.h"
@@ -8,8 +9,9 @@
 #include "Crust.h"
 #include "Troposphere.h"
 #include "Thermosphere.h"
-#include "Simulation.h"
 
+class Simulation;
+class Tile;
 
 /**
  * An object of Tile represents a certain amount of space on the gloce. This space
@@ -40,10 +42,23 @@
 class Tile
 {
 public:
+	/** Tile Constructor
+	@param lon the longitude of this tile (in the centre? at a corner?)
+	@param lat the latitude of this tile (in the centre? at a corner?)
+	@param area the area of this tile
+	@param parent the parent simulation
+	*/
+	Tile( double lon, double lat, double area, Simulation *parent );
+
+	/** Constructor—Invalid
+	Creates an invalid object. Don't try to use an object created this way.
+	*/
+	Tile();
+
 	/** The ID of the tile
 	@return the unique tile identifier
 	*/
-	unsigned int id() const;
+	uint id() const;
 
 	/*General Things */
 
@@ -72,17 +87,25 @@ public:
 	*/
 	Tile* west() const;
 
-	/** Set the tile to the north of this one */
-	void north(Tile *newNorth) const;
+	/** Set the tile to the north of this one
+	@param newNorth a pointer to keep as the tile north of this one
+	*/
+	void setNorth(Tile *newNorth);
 
-	/** Set the tile to the south of this one */
-	void south(Tile *newSouth) const;
+	/** Set the tile to the south of this one
+	@param newSouth a pointer to keep as the tile south of this one
+	*/
+	void setSouth(Tile *newSouth);
 
-	/** Set the tile to the east of this one */
-	void east(Tile *newEast) const;
+	/** Set the tile to the east of this one
+	@param newEast a pointer to keep as the tile east of this one
+	*/
+	void setEast(Tile *newEast);
 
-	/** Set the tile to the west of this one */
-	void west(Tile *newWest) const;
+	/** Set the tile to the west of this one
+	@param newWest a pointer to keep as the tile east of this one
+	*/
+	void setWest(Tile *newWest);
 
 	/** The longitude of this tile.
 	@note In formulas, longitude is \f$ \lambda \f$
@@ -101,37 +124,40 @@ public:
 	moles * m \f$^{-2} \f$
 	@return the area of this tile
 	*/
-	double area();
+	double area() const;
 
 	/** The Thermosphere at this Tile
 	@return a reference to the thermosphere
 	*/
-	Thermosphere& thermosphere() const;
+	Thermosphere& thermosphere();
 	/** The Troposphere at this Tile
 	@return a reference to the troposphere
 	*/
-	Troposphere& troposphere() const;
+	Troposphere& troposphere();
 	/** The Crust at this Tile
 	@return a reference to the crust
 	*/
-	Crust& crust() const;
+	Crust& crust();
 	/** The Mantle at this Tile
 	@return a reference to the mantle
 	*/
-	Mantle& mantle() const;
+	Mantle& mantle();
 	/** The OuterCore at this Tile
 	@return a reference to the outer core
 	*/
-	OuterCore& outerCore() const;
+	OuterCore& outerCore();
 	/** The InnerCore at this Tile
 	@return a reference to the inner core
 	*/
-	InnerCore& innerCore() const;
+	InnerCore& innerCore();
 
 private:
-	unsigned int m_id;
+	uint m_id;
 	Simulation *m_simulation;
-	Tile* m_north, m_south, m_east, m_west;
+	Tile* m_north;
+	Tile* m_south;
+	Tile* m_east;
+	Tile* m_west;
 	double m_lon, m_lat;
 	double m_area;
 	//Layers:

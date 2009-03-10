@@ -1,11 +1,29 @@
+//Own includes
 #include "Tile.h"
+
+//Gaia includes
+#include "InnerCore.h"
+#include "OuterCore.h"
+#include "Mantle.h"
+#include "Crust.h"
+#include "Troposphere.h"
+#include "Thermosphere.h"
+#include "Simulation.h"
+
+#include <cstdlib>
+using std::rand;
 
 Tile::Tile( double lon, double lat, double area, Simulation *parent )
 {
+	m_id = rand();
 	m_lat = lat;
 	m_lon = lon;
 	m_area = area;
 	m_simulation = parent;
+}
+
+Tile::Tile()
+{
 }
 
 Simulation* Tile::simulation() const
@@ -33,22 +51,22 @@ Tile* Tile::west() const
 	return m_west;
 }
 
-void north(Tile *newNorth) const
+void Tile::setNorth(Tile *newNorth)
 {
 	m_north = newNorth;
 }
 
-void south(Tile *newSouth) const
+void Tile::setSouth(Tile *newSouth)
 {
 	m_south = newSouth;
 }
 
-void east(Tile *newEast) const
+void Tile::setEast(Tile *newEast)
 {
 	m_east = newEast;
 }
 
-void west(Tile *newWest) const
+void Tile::setWest(Tile *newWest)
 {
 	m_west = newWest;
 }
@@ -68,61 +86,33 @@ double Tile::area() const
 	return m_area;
 }
 
-Thermosphere& Tile::thermosphere() const
+Thermosphere& Tile::thermosphere()
 {
 	return m_thermosphere;
 }
 
-Troposphere& Tile::troposphere() const
+Troposphere& Tile::troposphere()
 {
 	return m_troposphere;
 }
 
-Crust& Tile::crust() const
+Crust& Tile::crust()
 {
 	return m_crust;
 }
 
-Mantle& Tile::mantle() const
+Mantle& Tile::mantle()
 {
 	return m_mantle;
 }
 
-OuterCore& Tile::outerCore() const
+OuterCore& Tile::outerCore()
 {
 	return m_outerCore;
 }
 
-InnerCore& Tile::innerCore() const
+InnerCore& Tile::innerCore()
 {
 	return m_innerCore;
 }
-
-#if 0
-private:
-	uint m_id
-{
-	
-}
-	Simulation *m_simulation
-{
-	
-}
-	Tile* m_north, m_south, m_east, m_west
-{
-	
-}
-	double m_lon, m_lat;
-	double m_area;
-	//Layers:
-	Thermosphere m_thermosphere;
-	Troposphere m_troposphere;
-	Crust m_crust;
-	Mantle m_mantle;
-	OuterCore m_outerCore;
-	InnerCore m_innerCore;
-};
-#endif
-
-
 

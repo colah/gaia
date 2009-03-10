@@ -4,9 +4,12 @@
 #include <cmath>
 
 using namespace std;
+using namespace Marble;
 
 int main(){
-	Simulation *planet = new Simulation(10, 6e9);
+	//TODO: use the planet factory
+	Planet p( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6372000 );
+	Simulation *planet = new Simulation(10, p);
 	for (int j = 20; j >= -20; j--){
 		cout << "π*" << j << "/20";
 	}

@@ -7,7 +7,17 @@
 class Crust : public TileLayer
 {
 public:
+	/** Crust constructor
+	@param firmness the firmness. @see firmness()
+	@param roughness the roughness. @see roughness()
+	@param baseHeight the baseHeight. @see baseHeight()
+	*/
 	Crust( double firmness, double roughness, double baseHeight );
+	
+	/** Constructor—Invalid
+	Creates an invalid object. Don't try to use an object created this way.
+	*/
+	Crust();
 
 	/** Get the resistance to erosion.
 	@return the firmness (in what? Some coefficient?)

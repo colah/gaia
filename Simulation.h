@@ -4,7 +4,7 @@
 
 #include "Tile.h"
 
-#include <marble/Planet.h>
+#include <Planet.h>
 
 /** Objects of the Planet class represent a planet in the simulation.
   * It organizes all the tiles (Tile ), provides a mechanism 

@@ -6,7 +6,11 @@
 /** The Outer Core is the hot liquid near-center of a planet.*/
 class OuterCore : public TileLayer
 {
-
+public:
+	/** Constructor—Invalid
+	Creates an invalid object. Don't try to use an object created this way.
+	*/
+	OuterCore();
 };
 
 #endif

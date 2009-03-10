@@ -1,12 +1,16 @@
 
-#ifndef THERMOSPHERE_H
-#define THERMOSPHERE_H
+#ifndef TROPOSPHERE_H
+#define TROPOSPHERE_H
 
 #include "TileLayer.h"
 /**The thermosphere is the main part of the atmosphere of a planet.*/
-class Thermosphere: TileLayer
+class Troposphere : public TileLayer
 {
-
+public:
+	/** Constructor—Invalid
+	Creates an invalid object. Don't try to use an object created this way.
+	*/
+	Troposphere();
 };
 
 #endif

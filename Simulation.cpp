@@ -4,8 +4,8 @@
 #include "Simulation.h"
 
 //Marble Includes
-#include <marble/Planet.h>
-#include <marble/GeoDataCoordinates.h>
+#include <Planet.h>
+#include <GeoDataCoordinates.h>
 
 //Math Includes
 #include <cmath>
@@ -35,9 +35,6 @@ Simulation::Simulation( int precision, Planet planet )
 	m_tiles  =  new Tile*[m_precision*2 + 1];
 	m_tiles += m_precision;
 	for (int x = -m_precision*2; x <= m_precision*2; ++x) {
-		/*Make an array for each, and phase shift it. */
-		m_tiles[x]  = new Tile[m_precision*4 + 1];
-		m_tiles[x] += m_precision*2;
 	}
 	
 	for (int x = -m_precision*2; x <= m_precision*2; ++x) {
@@ -54,35 +51,40 @@ Simulation::Simulation( int precision, Planet planet )
 			/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
 			 * a  =  ------------------------        *
 			 *            |λ_2 - λ_1|                */
-			m_tiles[x][y].crust().area  = 4*M_PI*M_PI*pow(radius(),2.0);
-			m_tiles[x][y].crust().area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
-			m_tiles[x][y].crust().area /= PtoR;
-			/** @todo fix the following, they're written to quickly avoid segfaults, but they really need to be done differently: with polar wrap around.*/
-			if       (x == -m_precision*2){
-				m_tiles[x][y].south( &m_tiles[x][y]);
-				m_tiles[x][y].north( &m_tiles[++x][y]);
-			}else if (x ==  m_precision*2){
-				m_tiles[x][y].south( &m_tiles[--x][y]);
-				m_tiles[x][y].north( &m_tiles[x][y]);
-			}else                         {
-				m_tiles[x][y].south( &m_tiles[--x][y]);
-				m_tiles[x][y].north( &m_tiles[++x][y]);
+			double area  = 4*M_PI*M_PI*pow(radius(),2.0);
+			area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
+			area /= PtoR;
 
+			m_tiles[x][y] = Tile( lon, lat, area, this );
+			
+			/** @todo fix the following, they're written to quickly avoid segfaults, but they really need to be done differently: with polar wrap around.*/
+			//NOTE: perhaps this should be in another function? --h
+			//If you want to look at one correct implementation of normalization
+			//try looking at Marble::GeoDataCoordinates::normalizeLonLat
+			//(it took me several tries to get it right)
+			if       (x == -m_precision*2){
+				m_tiles[x][y].setSouth( &m_tiles[x][y]);
+				m_tiles[x][y].setNorth( &m_tiles[++x][y]);
+			}else if (x ==  m_precision*2){
+				m_tiles[x][y].setSouth( &m_tiles[--x][y]);
+				m_tiles[x][y].setNorth( &m_tiles[x][y]);
+			}else                         {
+				m_tiles[x][y].setSouth( &m_tiles[--x][y]);
+				m_tiles[x][y].setNorth( &m_tiles[++x][y]);
 			}
 
 			if       (y == -m_precision  ){
-				m_tiles[x][y].east(&(m_tiles[x][++y]));
-				m_tiles[x][y].west(&(m_tiles[x][--y]));
+				m_tiles[x][y].setEast(&(m_tiles[x][++y]));
+				m_tiles[x][y].setWest(&(m_tiles[x][--y]));
 			}else if (y ==  m_precision  ){
-				m_tiles[x][y].east( &(m_tiles[x][++y]));
-				m_tiles[x][y].west( &(m_tiles[x][--y]));
+				m_tiles[x][y].setEast( &(m_tiles[x][++y]));
+				m_tiles[x][y].setWest( &(m_tiles[x][--y]));
 			}else                         {
-				m_tiles[x][y].east( &(m_tiles[x][++y]));
-				m_tiles[x][y].west( &(m_tiles[x][--y]));
+				m_tiles[x][y].setEast( &(m_tiles[x][++y]));
+				m_tiles[x][y].setWest( &(m_tiles[x][--y]));
 			}
-
-			m_tiles[x][y].planet = this;
-			m_tiles[x][y].crust.base_height = 0;
+			//FIXME: give actual values
+			m_tiles[x][y].crust() = Crust( 0, 0, 0 );
 		}
 	}
 }
@@ -90,6 +92,7 @@ Simulation::Simulation( int precision, Planet planet )
 void Simulation::comet(double lat, double lon)
 {
 	Tile *test = getAtLL(lat,lon);
-	test->crust().baseHeight() += 5/test->crust().area();
+	Crust c = test->crust();
+	c.setBaseHeight( (5.0/ test->area()) + c.baseHeight() );
 }
 

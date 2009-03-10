@@ -7,6 +7,10 @@ Crust::Crust( double firmness, double roughness, double baseHeight )
 	m_baseHeight = baseHeight;
 }
 
+Crust::Crust()
+{
+}
+
 double Crust::firmness() const
 {
 	return m_firmness;

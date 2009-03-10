@@ -6,7 +6,11 @@
 /** The Inner Core is the hot, very dense center of a planet.*/
 class InnerCore : public TileLayer
 {
-
+public:
+	/** Constructor—Invalid
+	Creates an invalid object. Don't try to use an object created this way.
+	*/
+	InnerCore();
 };
 
 #endif
