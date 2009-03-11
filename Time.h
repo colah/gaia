@@ -20,5 +20,5 @@ private:
 	unsigned int hour;
 	Simulation *planet;
 
-}
+};
 #endif

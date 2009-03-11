@@ -1,18 +1,23 @@
 
-#include "Simulation.h"
+#include <QtCore/QString>
+
+#include <Planet.h>
+
 #include <iostream>
 #include <cmath>
+
+#include "Simulation.h"
 
 using namespace std;
 using namespace Marble;
 
 int main(){
+	//The name of the planet to use
+	QString target("earth");
+	Simulation *planet = new Simulation(10, Planet::planetByName(target) );
 	for (int j = 20; j >= -20; j--){
 		cout << "π*" << j << "/20";
 	}
-	//TODO: use the planet factory
-	Planet p( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6372000 );
-	Simulation *planet = new Simulation(10, p);
 	cout << endl;
 	for (int i = 10; i >= -10; i--){
 		cout << "π*" << i << "/20";

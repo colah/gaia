@@ -38,7 +38,7 @@ public:
 	  * @param precision the number of tiles to create per pi/2 radians.
 	  * @param planet the planet to be simulated
 	  */
-	Simulation( int precision, Marble::Planet planet);
+	Simulation( int precision, const Marble::Planet* planet);
 
 	/** Returns the Tile at a given latitude and longitude.
 	  * @param lat latitude in Radians

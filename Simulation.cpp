@@ -25,8 +25,8 @@ Tile * Simulation::getAtLL(double lon, double lat)
 	return m_tiles[(int)ceil(lat - 0.5)]+(int)ceil(lon-0.5);
 }
 
-Simulation::Simulation( int precision, Planet planet )
-	: Planet(planet), m_precision(precision)
+Simulation::Simulation( int precision, const Planet* planet )
+	: Planet(*planet), m_precision(precision)
 {
 	PtoR = (M_PI/2)/m_precision;
 

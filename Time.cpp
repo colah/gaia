@@ -1,11 +1,11 @@
+#include "Time.h"
 
-
-void operator++ (){
+void Time::operator++ (){
 	hour++;
 	runSchedule();
 }
 
-void runSchedule(){
+void Time::runSchedule(){
 	if (hour % 5 == 0){
 		planet->erode();
 	}
