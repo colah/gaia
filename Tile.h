@@ -10,6 +10,8 @@
 #include "Troposphere.h"
 #include "Thermosphere.h"
 
+//typedef unsigned int uint;
+
 class Simulation;
 class Tile;
 
@@ -46,7 +48,7 @@ public:
 	@param lon the longitude of this tile (in the centre? at a corner?)
 	@param lat the latitude of this tile (in the centre? at a corner?)
 	@param area the area of this tile
-	@param parent the parent simulation
+	@param m_parent the parent simulation
 	*/
 	Tile( double lon, double lat, double area, Simulation *parent );
 
@@ -67,7 +69,7 @@ public:
 
 	/*General Things */
 
-	/** The parent of this tile: its simulation
+	/** The m_parent of this tile: its simulation
 	@return a pointer to the simulation which owns this tile
 	*/
 	Simulation* simulation() const;
@@ -127,7 +129,7 @@ public:
 private:
 	uint m_id;
 	int m_x, m_y;
-	Simulation *m_simulation;
+	Simulation *m_parent;
 	double m_lon, m_lat;
 	double m_area;
 	//Layers:

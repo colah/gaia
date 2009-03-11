@@ -11,7 +11,11 @@
 #include "Simulation.h"
 
 #include <cstdlib>
+#include <cmath>
 using std::rand;
+using std::pow;
+using std::sin;
+using std::fabs;
 
 Tile::Tile( double lon, double lat, double area, Simulation *parent )
 {
@@ -19,7 +23,7 @@ Tile::Tile( double lon, double lat, double area, Simulation *parent )
 	m_lat = lat;
 	m_lon = lon;
 	m_area = area;
-	m_simulation = parent;
+	m_parent = parent;
 }
 
 Tile::Tile()
@@ -27,7 +31,7 @@ Tile::Tile()
 }
 
 Tile::Tile(int x, int y, Simulation *parent){
-	m_simulation = parent;
+	m_parent = parent;
 	double PtoR = parent->PtoR;
 
 	m_x = x; m_y = y;
@@ -39,7 +43,7 @@ Tile::Tile(int x, int y, Simulation *parent){
 	/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
 	  * a  =  ------------------------        *
 	  *            |λ_2 - λ_1|                */
-	m_area  = 4*M_PI*M_PI*pow(radius(),2.0);
+	m_area  = 4*M_PI*M_PI*pow(parent->radius(),2.0);
 	m_area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
 	m_area /= PtoR;
 	
@@ -59,21 +63,21 @@ Tile::Tile(int x, int y, Simulation *parent){
 
 Simulation* Tile::simulation() const
 {
-	return m_simulation;
+	return m_parent;
 }
 
 double Tile::lon() const
 {
 	/* We want to have longitude and latitude measured in radians,*
 	 * not our array indices.                                     */
-	return m_x*parent->PtoR;
+	return m_x*m_parent->PtoR;
 }
 
 double Tile::lat() const
 {
 	/* We want to have longitude and latitude measured in radians,*
 	 * not our array indices.                                     */
-	return m_y*parent->PtoR;
+	return m_y*m_parent->PtoR;
 }
 
 double Tile::area() const
@@ -111,7 +115,7 @@ InnerCore& Tile::innerCore()
 	return m_innerCore;
 }
 
-void erode()
+void Tile::erode()
 {
 	///@todo Implement me!
 }

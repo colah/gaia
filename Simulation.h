@@ -52,16 +52,15 @@ public:
 
 	/**causes erosion*/
 	void erode();
-
+	double PtoR;///< @todo fixme
 private:
 	/**  m_tiles is a 2d array of Tiles.*/
 	Tile **m_tiles;
 	/** describes the precision of the simulation and by extension
 	the dimensions of m_tiles. */
 	int  m_precision;
-	int maxX,maxY;
+	int m_maxX, m_maxY;
 	///FIXME: Needs a more descriptive name than PtoR
-	double PtoR;
 	 /*
 	 * Diagram
 	 * How Tiles are organized into m_tiles, relative to the variable
