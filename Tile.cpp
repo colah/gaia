@@ -11,7 +11,11 @@
 #include "Simulation.h"
 
 #include <cstdlib>
+#include <cmath>
 using std::rand;
+using std::pow;
+using std::sin;
+using std::fabs;
 
 Tile::Tile( double lon, double lat, double area, Simulation *parent )
 {
@@ -39,7 +43,7 @@ Tile::Tile(int x, int y, Simulation *parent){
 	/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
 	  * a  =  ------------------------        *
 	  *            |λ_2 - λ_1|                */
-	m_area  = 4*M_PI*M_PI*pow(radius(),2.0);
+	m_area  = 4*M_PI*M_PI*pow(simulation()->radius(),2.0);
 	m_area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
 	m_area /= PtoR;
 	

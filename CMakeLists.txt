@@ -10,8 +10,8 @@ message( ${MARBLE_INCLUDE_DIR} ${QT_INCLUDE_DIR} )
 
 
 SET( Gaia_SRCS Crust.cpp OuterCore.cpp Thermosphere.cpp TileLayer.cpp
-               InnerCore.cpp Mantle.cpp Simulation.cpp Tile.cpp Troposphere.cpp
-               main.cpp )
+               InnerCore.cpp Mantle.cpp Simulation.cpp Tile.cpp Time.cpp
+               Troposphere.cpp main.cpp )
 ADD_EXECUTABLE( gaia ${Gaia_SRCS} )
 
 target_link_libraries(  gaia ${MARBLE_LIBRARIES} ${QT_LIBRARIES} )
