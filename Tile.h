@@ -55,6 +55,11 @@ public:
 	*/
 	Tile();
 
+	/** Constructor
+	 * @param x position on x axis in simulation array.
+	 * @param y position on y axis in simulation array.*/
+	Tile(int x, int y, Simulation *parent);
+
 	/** The ID of the tile
 	@return the unique tile identifier
 	*/
@@ -67,45 +72,9 @@ public:
 	*/
 	Simulation* simulation() const;
 
-	/** The tile to the north of this one
-	@return a pointer to the tile to the north of this one
-	*/
-	Tile* north() const;
-
-	/** The tile to the south of this one
-	@return a pointer to the tile to the south of this one
-	*/
-	Tile* south() const;
-
-	/** The tile to the east of this one
-	@return a pointer to the tile to the east of this one
-	*/
-	Tile* east() const;
-
-	/** The tile to the west of this one
-	@return a pointer to the tile to the west of this one
-	*/
-	Tile* west() const;
-
-	/** Set the tile to the north of this one
-	@param newNorth a pointer to keep as the tile north of this one
-	*/
-	void setNorth(Tile *newNorth);
-
-	/** Set the tile to the south of this one
-	@param newSouth a pointer to keep as the tile south of this one
-	*/
-	void setSouth(Tile *newSouth);
-
-	/** Set the tile to the east of this one
-	@param newEast a pointer to keep as the tile east of this one
-	*/
-	void setEast(Tile *newEast);
-
-	/** Set the tile to the west of this one
-	@param newWest a pointer to keep as the tile east of this one
-	*/
-	void setWest(Tile *newWest);
+	Tile* getRelative(int Dx, int Dy){
+		
+	}
 
 	/** The longitude of this tile.
 	@note In formulas, longitude is \f$ \lambda \f$
@@ -150,14 +119,15 @@ public:
 	@return a reference to the inner core
 	*/
 	InnerCore& innerCore();
+	/** Causes erosion to adjacent tiles.*/
+	void erode();
+
+
 
 private:
 	uint m_id;
+	int m_x, m_y;
 	Simulation *m_simulation;
-	Tile* m_north;
-	Tile* m_south;
-	Tile* m_east;
-	Tile* m_west;
 	double m_lon, m_lat;
 	double m_area;
 	//Layers:

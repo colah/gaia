@@ -18,8 +18,6 @@ using namespace Marble;
 
 Tile * Simulation::getAtLL(double lon, double lat)
 {
-	//FIXME: Needs a more descriptive name than PtoR
-	double PtoR = (M_PI/2)/m_precision;
 	//Lon/Lat have to be normalized together, or it'll be done wrong.
 	GeoDataCoordinates::normalizeLonLat( lon, lat );
 	lat /= PtoR;
@@ -30,62 +28,26 @@ Tile * Simulation::getAtLL(double lon, double lat)
 Simulation::Simulation( int precision, Planet planet )
 	: Planet(planet), m_precision(precision)
 {
-	double PtoR = (M_PI/2)/m_precision;
+	PtoR = (M_PI/2)/m_precision;
+
+	maxX = m_precision*2; maxY = m_precision;
 	/*Make the array of arrays, and phase shift it. */
-	m_tiles  =  new Tile*[m_precision*2 + 1];
-	m_tiles += m_precision;
-	maxX = m_precision*2;
-	maxY = m_precision;
-	//for (int x = -maxX; x <= maxX; ++x) {}
-	
+	m_tiles     = new Tile*[maxX*2+1];
+	m_tiles    += maxX;
+	/*Make the array of tiles.*/
+	Tile *array = new Tile[(maxX*2 + 1)*(maxY*2 + 1)];
+	/*Make each pointer to an array in m_tiles point to a point in
+	 * our Tile array such that it is at the midle of a subarray of
+	 * length m_precision*4 + 1.*/
+	for (int x = -maxX; x <= maxX; ++x) {
+		m_tiles[x]  = array;
+		m_tiles[x] += x*(maxY*2 + 1);
+		m_tiles[x] += maxY;
+	}
+	/*Create each Tile.*/
 	for (int x = -maxX; x <= maxX; ++x) {
 		for (int y = -maxY; y <= maxY; ++y) {
-			/* We want to have longitude and latitude measured in radians,*
-			 * not our array indices.                                     */
-			double lon = x*PtoR;
-			double lat = y*PtoR;
-			
-			/** @note On a perfect sphere, the formula for area is:
-			* \f$ \frac{4\pi^2r^2 \lvert\sin(\phi_1)-\sin(\phi_2)\rvert }
-			           {\lvert \lambda_2-\lambda_1 \rvert} \f$*/
-			//OR, in plaintext:
-			/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
-			 * a  =  ------------------------        *
-			 *            |λ_2 - λ_1|                */
-			double area  = 4*M_PI*M_PI*pow(radius(),2.0);
-			area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
-			area /= PtoR;
-
-			m_tiles[x][y] = Tile( lon, lat, area, this );
-			
-			/** @todo fix the following, they're written to quickly avoid segfaults, but they really need to be done differently: with polar wrap around.*/
-			//NOTE: perhaps this should be in another function? --h
-			//If you want to look at one correct implementation of normalization
-			//try looking at Marble::GeoDataCoordinates::normalizeLonLat
-			//(it took me several tries to get it right)
-			if       (x == -m_precision*2){
-				m_tiles[x][y].setSouth( &m_tiles[x][y]);
-				m_tiles[x][y].setNorth( &m_tiles[++x][y]);
-			}else if (x ==  m_precision*2){
-				m_tiles[x][y].setSouth( &m_tiles[--x][y]);
-				m_tiles[x][y].setNorth( &m_tiles[x][y]);
-			}else                         {
-				m_tiles[x][y].setSouth( &m_tiles[--x][y]);
-				m_tiles[x][y].setNorth( &m_tiles[++x][y]);
-			}
-
-			if       (y == -m_precision  ){
-				m_tiles[x][y].setEast(&(m_tiles[x][++y]));
-				m_tiles[x][y].setWest(&(m_tiles[x][--y]));
-			}else if (y ==  m_precision  ){
-				m_tiles[x][y].setEast( &(m_tiles[x][++y]));
-				m_tiles[x][y].setWest( &(m_tiles[x][--y]));
-			}else                         {
-				m_tiles[x][y].setEast( &(m_tiles[x][++y]));
-				m_tiles[x][y].setWest( &(m_tiles[x][--y]));
-			}
-			//FIXME: give actual values
-			m_tiles[x][y].crust() = Crust( 1, 1, 0 );
+			m_tiles[x][y] = Tile(x,y,this);
 		}
 	}
 }
@@ -101,21 +63,10 @@ void erode(){
 	//It would be cool to use pointer arithmetic to do an iterator style loop.
 	//More efficient too.
 	///@todo fix elevation only leans north. Consider our API, I think the OO encapsulation has been taken a little to far.
+	
 	for (int x = -maxX; x <= maxX; ++x) {
 		for (int y = -maxY; y <= maxY; ++y) {
-			Crust c = tiles[x][y].crust();
-			Crust adjC = tiles[x][y].north().crust();
-			//The difference in elevation
-			double d = adjC.elevation() - c.elevation();
-			if (d > 0) {
-				double change;
-				
-				change = d*c.roughness()/c.firmness();
-				c.setElevation( c.elevation() + change );
-				
-				change = d*adjC.roughness()/adjC.firmness();
-				adjC.setElevation( adjC.elevation() +change );
-			}
+			tiles[x][y].erode();
 		}
 	}
 

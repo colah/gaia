@@ -9,7 +9,8 @@
   * It organizes all the tiles (Tile ), provides a mechanism 
   * to access them ([] ), and functions to modify the planet.
 
- * @section Diagram 
+ * @section tiles
+ * @subsection 2dArray 
  * How Tiles are organized into m_tiles, relative to the variable precision (represented by p):
 
  * <pre>                            longitude
@@ -23,7 +24,12 @@
 
  *   @note In terms of radians, \f$ p=\pi/2 \f$.
  *   @note The operator [] is then overloaded for this class to allow for
- * (*this)[latitude][longitude]                                             */
+ * (*this)[latitude][longitude] 
+ * @subsection 1dArray
+ * The orginization doubles, however. Not only are the tiles in a 2d array,
+ * they're also in a 1d array:
+ * <pre> |latitude|latitude|... longitude times.</pre>
+*/
 
 class Simulation : public Marble::Planet
 {
@@ -54,6 +60,8 @@ private:
 	the dimensions of m_tiles. */
 	int  m_precision;
 	int maxX,maxY;
+	///FIXME: Needs a more descriptive name than PtoR
+	double PtoR;
 	 /*
 	 * Diagram
 	 * How Tiles are organized into m_tiles, relative to the variable

@@ -26,59 +26,54 @@ Tile::Tile()
 {
 }
 
+Tile::Tile(int x, int y, Simulation *parent){
+	m_simulation = parent;
+	double PtoR = parent->PtoR;
+
+	m_x = x; m_y = y;
+
+	/** @note On a perfect sphere, the formula for area is:
+	* \f$ \frac{4\pi^2r^2 \lvert\sin(\phi_1)-\sin(\phi_2)\rvert }
+	* {\lvert \lambda_2-\lambda_1 \rvert} \f$*/
+	//OR, in plaintext:
+	/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
+	  * a  =  ------------------------        *
+	  *            |λ_2 - λ_1|                */
+	m_area  = 4*M_PI*M_PI*pow(radius(),2.0);
+	m_area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
+	m_area /= PtoR;
+	
+	
+	  /** @todo fix the following, they're written to quickly avoid segfaults, but they 
+	    * really need to be done differently: with polar wrap around.
+	    * @note this is written using simple pointer arithmetic. Remember: n+i = &n[i], 
+	    * but n+i is faster.*/
+	  //NOTE: perhaps this should be in another function? --h
+	  //If you want to look at one correct implementation of normalization
+	  //try looking at Marble::GeoDataCoordinates::normalizeLonLat
+	  //(it took me several tries to get it right)
+	  //Chris: I will, later. This is just a hacky solution.
+}
+
+
+
 Simulation* Tile::simulation() const
 {
 	return m_simulation;
 }
 
-Tile* Tile::north() const
-{
-	return m_north;
-}
-
-Tile* Tile::south() const
-{
-	return m_south;
-}
-
-Tile* Tile::east() const
-{
-	return m_east;
-}
-
-Tile* Tile::west() const
-{
-	return m_west;
-}
-
-void Tile::setNorth(Tile *newNorth)
-{
-	m_north = newNorth;
-}
-
-void Tile::setSouth(Tile *newSouth)
-{
-	m_south = newSouth;
-}
-
-void Tile::setEast(Tile *newEast)
-{
-	m_east = newEast;
-}
-
-void Tile::setWest(Tile *newWest)
-{
-	m_west = newWest;
-}
-
 double Tile::lon() const
 {
-	return m_lon;
+	/* We want to have longitude and latitude measured in radians,*
+	 * not our array indices.                                     */
+	return m_x*parent->PtoR;
 }
 
 double Tile::lat() const
 {
-	return m_lat;
+	/* We want to have longitude and latitude measured in radians,*
+	 * not our array indices.                                     */
+	return m_y*parent->PtoR;
 }
 
 double Tile::area() const
@@ -114,6 +109,11 @@ OuterCore& Tile::outerCore()
 InnerCore& Tile::innerCore()
 {
 	return m_innerCore;
+}
+
+void erode()
+{
+	///@todo Implement me!
 }
 
 
