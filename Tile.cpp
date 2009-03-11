@@ -40,9 +40,9 @@ Tile::Tile(int x, int y, Simulation *parent){
 	* \f$ \frac{4\pi^2r^2 \lvert\sin(\phi_1)-\sin(\phi_2)\rvert }
 	* {\lvert \lambda_2-\lambda_1 \rvert} \f$*/
 	//OR, in plaintext:
-	/*       4π²r²|sin(φ_1)-sin(φ_2)|        *
-	  * a  =  ------------------------        *
-	  *            |λ_2 - λ_1|                */
+	 /*          4π²r²|sin(φ₁) - sin(φ₂)|       *
+	  *  a  =   ---------------------------     *
+	  *                  |λ₂ - λ₁|              */
 	m_area  = 4*M_PI*M_PI*pow(parent->radius(),2.0);
 	m_area *= fabs( sin(PtoR*(x+0.5)) - sin(PtoR*(y-0.5)) );
 	m_area /= PtoR;
