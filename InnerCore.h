@@ -11,6 +11,11 @@ public:
 	Creates an invalid object. Don't try to use an object created this way.
 	*/
 	InnerCore();
+	
+	/** Constructor
+	@param parent the parent tile
+	*/
+	InnerCore( Tile *parent );
 };
 
 #endif

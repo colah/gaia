@@ -4,3 +4,7 @@ InnerCore::InnerCore()
 {
 }
 
+InnerCore::InnerCore( Tile *parent )
+	: TileLayer( parent )
+{
+}

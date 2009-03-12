@@ -11,8 +11,9 @@ public:
 	@param firmness the firmness. @see firmness()
 	@param roughness the roughness. @see roughness()
 	@param elevation the elevation. @see elevation()
+	@param parent the parent tile
 	*/
-	Crust( double firmness, double roughness, double elevation );
+	Crust( double firmness, double roughness, double elevation, Tile* parent );
 	
 	/** Constructor—Invalid
 	Creates an invalid object. Don't try to use an object created this way.

@@ -1,6 +1,7 @@
 #include "Crust.h"
 
-Crust::Crust( double firmness, double roughness, double elevation )
+Crust::Crust( double firmness, double roughness, double elevation, Tile* parent)
+	: TileLayer(parent)
 {
 	m_firmness = firmness;
 	m_roughness = roughness;

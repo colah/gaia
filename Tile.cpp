@@ -24,6 +24,14 @@ Tile::Tile( double lon, double lat, double area, Simulation *parent )
 	m_lon = lon;
 	m_area = area;
 	m_parent = parent;
+
+	//Initialize Layers
+	m_thermosphere = Thermosphere( this );
+	m_troposphere = Troposphere( this );
+	m_crust = Crust( 0.5, 0.5, 0.0, this );
+	m_mantle = Mantle( this );
+	m_outerCore = OuterCore( this );
+	m_innerCore = InnerCore( this );
 }
 
 Tile::Tile()
@@ -57,6 +65,14 @@ Tile::Tile(int x, int y, Simulation *parent){
 	  //try looking at Marble::GeoDataCoordinates::normalizeLonLat
 	  //(it took me several tries to get it right)
 	  //Chris: I will, later. This is just a hacky solution.
+
+	//Initialize Layers
+	m_thermosphere = Thermosphere( this );
+	m_troposphere = Troposphere( this );
+	m_crust = Crust( 0.5, 0.5, 0.0, this );
+	m_mantle = Mantle( this );
+	m_outerCore = OuterCore( this );
+	m_innerCore = InnerCore( this );
 }
 
 

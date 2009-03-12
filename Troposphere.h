@@ -11,6 +11,10 @@ public:
 	Creates an invalid object. Don't try to use an object created this way.
 	*/
 	Troposphere();
+	/** Constructor
+	@param parent the parent tile
+	*/
+	Troposphere( Tile *parent );
 };
 
 #endif

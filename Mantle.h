@@ -12,6 +12,11 @@ public:
 	Creates an invalid object. Don't try to use an object created this way.
 	*/
 	Mantle();
+
+	/** Constructor
+	@param parent the parent tile
+	*/
+	Mantle( Tile *parent );
 };
 
 #endif

@@ -4,3 +4,8 @@ Mantle::Mantle()
 {
 }
 
+
+Mantle::Mantle( Tile *parent )
+	: TileLayer( parent )
+{
+}

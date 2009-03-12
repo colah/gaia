@@ -13,6 +13,10 @@ public:
 	*/
 	Thermosphere();
 
+	/** Constructor
+	@param parent the parent tile
+	*/
+	Thermosphere( Tile *parent );
 };
 
 #endif
