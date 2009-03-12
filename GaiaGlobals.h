@@ -23,50 +23,6 @@ enum View {
 	LifeFormsView 
 };
 
-//These are irrelevant, we should read from a file instead.
-#if 0
-/**
- * @brief This enum describes the type of lifeform.
- * @note aquatic lifeforms go first in order to easily distinguish the two
- * @see AquaticLifeForms
- */
-enum LifeFormType {
-	Prokaryote,
-	Eukaryote,
-	Annelid,
-	Crustacean,
-	Mollusk,
-	Fish,
-	Cetacean,
-	Amphibian,
-	Insect,
-	Reptile,
-	Bird,
-	Mammal
-};
-
-/**
- * @brief This number is the border between aquatic and non-aquatic lifeforms.
- * @see LifeFormType
- */
-static const int AquaticLifeForms = 7;
-
-/**
- * @brief This enum describes the biome.
- */
-enum BiomeType {
-	Rock,
-	Arctic,
-	Boreal,
-	Desert,
-	Grass,
-	Forest,
-	Jungle,
-	Swamp
-};
-#endif
-
-
 } //ns Gaia
 
 #endif
