@@ -22,7 +22,9 @@ int main(){
 	for (int i = 10; i >= -10; i--){
 		cout << "π*" << i << "/20";
 		for (int j = 20; j >= -20; j--){
-			cout << " " << planet->getAtLL(M_PI*j/20,M_PI*i/20)->crust().elevation();
+			qreal lon = (M_PI/20.0)*j;
+			qreal lat = (M_PI/20.0)*i; 
+			cout << " " << planet->getAtLL(lon,lat)->crust().elevation();
 		}
 		cout << endl;
 	}
