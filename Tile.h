@@ -1,7 +1,8 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <QtGlobal>
+#include <QtCore/QList>
+#include <QtCore/QPoint>
 
 #include "InnerCore.h"
 #include "OuterCore.h"
@@ -13,7 +14,6 @@
 //typedef unsigned int uint;
 
 class Simulation;
-class Tile;
 
 /**
  * An object of Tile represents a certain amount of space on the gloce. This space
@@ -48,9 +48,9 @@ public:
 	@param lon the longitude of this tile (in the centre? at a corner?)
 	@param lat the latitude of this tile (in the centre? at a corner?)
 	@param area the area of this tile
-	@param m_parent the parent simulation
+	@param parent the parent simulation
 	*/
-	Tile( double lon, double lat, double area, Simulation *parent );
+	//Tile( double lon, double lat, double area, Simulation *parent );
 
 	/** Constructor—Invalid
 	Creates an invalid object. Don't try to use an object created this way.
@@ -59,8 +59,18 @@ public:
 
 	/** Constructor
 	 * @param x position on x axis in simulation array.
-	 * @param y position on y axis in simulation array.*/
+	 * @param y position on y axis in simulation array.
+	 * @param parent the parent simulation
+	*/
 	Tile(int x, int y, Simulation *parent);
+
+	/** Constructor
+	 * @param x position on x axis in simulation array.
+	 * @param y position on y axis in simulation array.
+	 * @param parent the parent simulation
+	 * @todo There's no reason for it to need area. It knows lon/lat.
+	*/
+	Tile( double lon, double lat, double area, Simulation *parent );
 
 	/** The ID of the tile
 	@return the unique tile identifier
@@ -69,14 +79,20 @@ public:
 
 	/*General Things */
 
-	/** The m_parent of this tile: its simulation
+	/** The parent of this tile: its simulation
 	@return a pointer to the simulation which owns this tile
 	*/
 	Simulation* simulation() const;
 
-	Tile* getRelative(int Dx, int Dy){
-		
-	}
+	/** Get this tile's location on the 2D array
+	 * @return the tile's location on the 2D array
+	 */
+	QPoint loc() const;
+
+	/** Get this tile's neighbours
+	 * @return a list of this tile's neighbours
+	 */
+	QList<QPoint> neighbours();
 
 	/** The longitude of this tile.
 	@note In formulas, longitude is \f$ \lambda \f$
@@ -127,8 +143,11 @@ public:
 
 
 private:
-	uint m_id;
+	//static QPoint normalize( const QPoint& p ) const;
 	int m_x, m_y;
+	uint m_id;
+	QPoint m_loc;
+	QList<QPoint> m_neighbours;
 	Simulation *m_parent;
 	double m_lon, m_lat;
 	double m_area;

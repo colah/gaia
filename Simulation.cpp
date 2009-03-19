@@ -3,6 +3,11 @@
 //Own header
 #include "Simulation.h"
 
+//Qt includes
+#include <QtCore/QSize>
+#include <QtCore/QList>
+#include <QtCore/QDebug>
+
 //Marble Includes
 #include <Planet.h>
 #include <GeoDataCoordinates.h>
@@ -20,54 +25,63 @@ Tile * Simulation::getAtLL(double lon, double lat)
 {
 	//Lon/Lat have to be normalized together, or it'll be done wrong.
 	GeoDataCoordinates::normalizeLonLat( lon, lat );
-	lat /= PtoR;
-	lon /= PtoR;
-	return m_tiles[(int)ceil(lat - 0.5)]+(int)ceil(lon-0.5);
+	//The array has 0,0 at -π, π/2, so we adjust the coords
+	//set -π = 0
+	lon += M_PI;
+	//set π/2 = 0
+	lat = fabs( lat - (M_PI/2.0) );
+	lat /= m_PtoR;
+	lon /= m_PtoR;
+	int x = static_cast<int>(floor(lon));
+	int y = static_cast<int>(floor(lat));
+	//qDebug() << "getAtLL: convert LL" << lon << lat << "to ints" << x << y;
+	return m_tiles[x][y];
 }
 
 Simulation::Simulation( int precision, const Planet* planet )
-	: Planet(*planet), m_precision(precision)
+	: Planet(*planet),
+	m_precision(precision),
+	m_PtoR( M_PI /m_precision ),
+	m_size( 2*precision, precision )
 {
-	PtoR = (M_PI/2)/m_precision;
-
-	m_maxX = m_precision*2; m_maxY = m_precision;
-	/*Make the array of arrays, and phase shift it. */
-	m_tiles     = new Tile*[m_maxX*2+1];
-	m_tiles    += m_maxX;
-	/*Make the array of tiles.*/
-	Tile *array = new Tile[(m_maxX*2 + 1)*(m_maxY*2 + 1)];
-	/*Make each pointer to an array in m_tiles point to a point in
-	 * our Tile array such that it is at the midle of a subarray of
-	 * length m_precision*4 + 1.*/
-	for (int x = -m_maxX; x <= m_maxX; ++x) {
-		m_tiles[x]  = array;
-		m_tiles[x] += x*(m_maxY*2 + 1);
-		m_tiles[x] += m_maxY;
-	}
-	/*Create each Tile.*/
-	for (int x = -m_maxX; x <= m_maxX; ++x) {
-		for (int y = -m_maxY; y <= m_maxY; ++y) {
-			m_tiles[x][y] = Tile(x,y,this);
+	//Construct our list of lists
+	m_tiles = QList< QList<Tile*> >();
+	//By using X first we can do m_tiles[x][y]->foo()
+	for( int x = 0; x < m_size.width(); ++x ) {
+		//Append a list for this column
+		m_tiles.push_back( QList<Tile*>() );
+		for( int y = 0; y < m_size.height(); ++y ) {
+			//Create a new tile
+			Tile *t = new Tile(x,y,this);
+			//Add it to the array
+			m_tiles[x].push_back( t );
 		}
 	}
 }
 
-void Simulation::comet(double lat, double lon)
+void Simulation::comet(double lon, double lat)
 {
-	Tile *test = getAtLL(lat,lon);
+	Tile *test = getAtLL(lon,lat);
 	Crust c = test->crust();
 	c.setElevation( (5.0/ test->area()) + c.elevation() );
 }
 
-void Simulation::erode(){
-	//It would be cool to use pointer arithmetic to do an iterator style loop.
-	//More efficient too.
-	///@todo fix elevation only leans north. Consider our API, I think the OO encapsulation has been taken a little to far.
-	
-	for (int x = -m_maxX; x <= m_maxX; ++x) {
-		for (int y = -m_maxY; y <= m_maxY; ++y) {
-			m_tiles[x][y].erode();
+double Simulation::PtoR() const
+{
+	return m_PtoR;
+}
+
+QSize Simulation::arraySize() const
+{
+	return m_size;
+}
+
+void Simulation::erode()
+{
+	for( int x = 0; x < m_size.width(); ++x ) {
+		for( int y = 0; y < m_size.height(); ++y ) {
+			//Erode the tile
+			m_tiles[x][y]->erode();
 		}
 	}
-
 }

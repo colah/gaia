@@ -40,7 +40,7 @@ Tile::Tile()
 
 Tile::Tile(int x, int y, Simulation *parent){
 	m_parent = parent;
-	double PtoR = parent->PtoR;
+	double PtoR = parent->PtoR();
 
 	m_x = x; m_y = y;
 
@@ -86,14 +86,14 @@ double Tile::lon() const
 {
 	/* We want to have longitude and latitude measured in radians,*
 	 * not our array indices.                                     */
-	return m_x*m_parent->PtoR;
+	return m_x*m_parent->PtoR();
 }
 
 double Tile::lat() const
 {
 	/* We want to have longitude and latitude measured in radians,*
 	 * not our array indices.                                     */
-	return m_y*m_parent->PtoR;
+	return m_y*m_parent->PtoR();
 }
 
 double Tile::area() const

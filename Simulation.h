@@ -3,6 +3,10 @@
 
 #include "Tile.h"
 
+#include <QtCore/QSize>
+//Forward declarations of Qt Container classes
+#include <QtCore/QtContainerFwd> 
+
 #include <Planet.h>
 
 /** Objects of the Planet class represent a planet in the simulation.
@@ -52,15 +56,23 @@ public:
 
 	/**causes erosion*/
 	void erode();
-	double PtoR;///< @todo fixme
+	///< @todo fixme
+	double PtoR() const;
+
+	/** Get the size of the array of tiles
+	@return the size of the array
+	*/
+	QSize arraySize() const;
 private:
 	/**  m_tiles is a 2d array of Tiles.*/
-	Tile **m_tiles;
+	QList< QList<Tile*> > m_tiles;
 	/** describes the precision of the simulation and by extension
 	the dimensions of m_tiles. */
 	int  m_precision;
-	int m_maxX, m_maxY;
+	/** describes the size of the 2d array */
+	QSize m_size;
 	///FIXME: Needs a more descriptive name than PtoR
+	double m_PtoR;
 	 /*
 	 * Diagram
 	 * How Tiles are organized into m_tiles, relative to the variable
@@ -77,7 +89,7 @@ private:
 	 *  NOTE In terms of radians,  p=π/2 .
 	 *
 	 *  NOTE The operator [] is then overloaded for this class to allow for
-	 * (*this)[latitude][longitude]                                              */
+	 * (*this)[latitude][longitude]                                          */
 
 	/*General Data*/
 	/** The planet's mass in kg.*/
